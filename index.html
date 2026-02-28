@@ -31,7 +31,7 @@
     </div>
   </div>
 
-  <!-- ===== ホーム画面 ===== -->
+  <!-- ===== アプリシェル（ログイン後） ===== -->
   <div id="home-screen" class="screen">
 
     <!-- ヘッダー -->
@@ -43,37 +43,116 @@
       <button id="logout-btn" class="btn-logout">ログアウト</button>
     </header>
 
-    <!-- サマリー -->
-    <section class="summary-section" aria-label="合計金額">
-      <div class="summary-grid">
-        <div class="summary-card">
-          <div class="summary-label">月間合計</div>
-          <div class="summary-amount" id="monthly-total">¥0</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-label">年間合計</div>
-          <div class="summary-amount" id="yearly-total">¥0</div>
-        </div>
-      </div>
-      <div class="summary-count">
-        <span class="summary-count-label">登録サブスク数</span>
-        <span class="summary-count-value" id="sub-count">0件</span>
-      </div>
-    </section>
+    <!-- ===== ホームパネル ===== -->
+    <div id="home-panel" class="panel active">
 
-    <!-- サブスク一覧 -->
-    <div class="section-header">サブスクリプション</div>
+      <!-- サマリー -->
+      <section class="summary-section" aria-label="合計金額">
+        <div class="summary-grid">
+          <div class="summary-card">
+            <div class="summary-label">月間合計</div>
+            <div class="summary-amount" id="monthly-total">¥0</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-label">年間合計</div>
+            <div class="summary-amount" id="yearly-total">¥0</div>
+          </div>
+        </div>
+        <div class="summary-count">
+          <span class="summary-count-label">登録サブスク数</span>
+          <span class="summary-count-value" id="sub-count">0件</span>
+        </div>
+      </section>
 
-    <div id="empty-state" class="empty-state" aria-live="polite">
-      <div class="empty-icon">📭</div>
-      <p class="empty-text">サブスクがまだありません</p>
-      <p class="empty-hint">右下の「＋」ボタンで追加してください</p>
+      <!-- サブスク一覧 -->
+      <div class="section-header">サブスクリプション</div>
+
+      <div id="empty-state" class="empty-state" aria-live="polite">
+        <div class="empty-icon">📭</div>
+        <p class="empty-text">サブスクがまだありません</p>
+        <p class="empty-hint">右下の「＋」ボタンで追加してください</p>
+      </div>
+
+      <div id="sub-list" class="sub-list" role="list" aria-label="サブスクリプション一覧"></div>
+
+      <!-- FAB -->
+      <button id="fab-add" class="fab" aria-label="サブスクを追加">＋</button>
+
     </div>
 
-    <div id="sub-list" class="sub-list" role="list" aria-label="サブスクリプション一覧"></div>
+    <!-- ===== データパネル ===== -->
+    <div id="data-panel" class="panel">
 
-    <!-- FAB -->
-    <button id="fab-add" class="fab" aria-label="サブスクを追加">＋</button>
+      <!-- 3つのサマリーカード -->
+      <section class="analytics-summary" aria-label="支出サマリー">
+        <div class="analytics-card">
+          <div class="analytics-label">日間</div>
+          <div class="analytics-amount" id="analytics-daily">¥0</div>
+        </div>
+        <div class="analytics-card">
+          <div class="analytics-label">月間</div>
+          <div class="analytics-amount" id="analytics-monthly">¥0</div>
+        </div>
+        <div class="analytics-card">
+          <div class="analytics-label">年間</div>
+          <div class="analytics-amount" id="analytics-yearly">¥0</div>
+        </div>
+      </section>
+
+      <!-- データなし -->
+      <div id="analytics-empty" class="empty-state" style="display:none">
+        <div class="empty-icon">📊</div>
+        <p class="empty-text">データがありません</p>
+        <p class="empty-hint">ホームからサブスクを追加してください</p>
+      </div>
+
+      <!-- ドーナツチャート -->
+      <div class="chart-section" id="chart-section-donut">
+        <div class="chart-title">サービス別内訳（年間）</div>
+        <div class="donut-wrapper">
+          <canvas id="donut-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- 横棒グラフ -->
+      <div class="chart-section" id="chart-section-bar">
+        <div class="chart-title">年間支出ランキング</div>
+        <div class="bar-wrapper">
+          <canvas id="bar-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- テーブル -->
+      <div class="chart-section" id="chart-section-table">
+        <div class="chart-title">サービス別金額一覧</div>
+        <div class="table-wrapper">
+          <table class="analytics-table">
+            <thead>
+              <tr>
+                <th>サービス</th>
+                <th>年間</th>
+                <th>月間</th>
+                <th>日間</th>
+              </tr>
+            </thead>
+            <tbody id="analytics-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ===== タブバー ===== -->
+    <nav class="tab-bar" aria-label="メインナビゲーション">
+      <button class="tab-btn active" data-panel="home-panel" aria-selected="true">
+        <span class="tab-icon">🏠</span>
+        <span class="tab-label">ホーム</span>
+      </button>
+      <button class="tab-btn" data-panel="data-panel" aria-selected="false">
+        <span class="tab-icon">📊</span>
+        <span class="tab-label">データ</span>
+      </button>
+    </nav>
 
   </div>
 
@@ -136,7 +215,7 @@
     </div>
   </div>
 
-  <!-- Supabase config（.gitignore対象） -->
+  <!-- Supabase config -->
   <script src="js/config.js"></script>
 
   <!-- メインスクリプト -->

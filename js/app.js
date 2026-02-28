@@ -3,6 +3,7 @@
 import { fetchSubscriptions, addSubscription, updateSubscription, deleteSubscription } from './supabase.js';
 import { initAuth } from './auth.js';
 import { requestNotificationPermission, registerServiceWorker, sendSubscriptionsToSW } from './notification.js';
+import { renderAnalytics } from './analytics.js';
 
 let subscriptions = [];
 let editingId = null;
@@ -28,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
   );
 
   setupEventListeners();
+  setupTabs();
 });
 
 // ---- 画面切り替え ----
@@ -35,6 +37,39 @@ document.addEventListener('DOMContentLoaded', () => {
 function showScreen(screenId) {
   document.querySelectorAll('.screen').forEach((s) => s.classList.remove('active'));
   document.getElementById(screenId).classList.add('active');
+}
+
+// ---- タブ切り替え ----
+
+function setupTabs() {
+  document.querySelectorAll('.tab-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const panelId = btn.dataset.panel;
+
+      document.querySelectorAll('.tab-btn').forEach((b) => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+
+      document.querySelectorAll('.panel').forEach((p) => p.classList.remove('active'));
+      document.getElementById(panelId).classList.add('active');
+
+      // FABはホームパネルのみ表示
+      document.getElementById('fab-add').style.display =
+        panelId === 'home-panel' ? 'flex' : 'none';
+
+      // データパネルに切り替えたらチャートを描画
+      if (panelId === 'data-panel') {
+        renderAnalytics(subscriptions);
+      }
+    });
+  });
+}
+
+function isDataPanelActive() {
+  return document.getElementById('data-panel')?.classList.contains('active');
 }
 
 // ---- イベントリスナー ----
@@ -236,6 +271,7 @@ async function handleFormSubmit(e) {
     renderSubscriptions();
     updateSummary();
     sendSubscriptionsToSW(subscriptions);
+    if (isDataPanelActive()) renderAnalytics(subscriptions);
     closeModal();
   } catch (err) {
     console.error('保存エラー:', err?.message, '| code:', err?.code, '| details:', err?.details, err);
@@ -264,6 +300,7 @@ async function handleDelete(id) {
     renderSubscriptions();
     updateSummary();
     sendSubscriptionsToSW(subscriptions);
+    if (isDataPanelActive()) renderAnalytics(subscriptions);
     showToast('削除しました');
   } catch (err) {
     console.error('削除エラー:', err);
