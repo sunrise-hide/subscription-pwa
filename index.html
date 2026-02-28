@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="サブスクリプションを一元管理するPWAアプリ" />
+  <meta name="theme-color" content="#1a1a2e" />
+  <title>SubsTracker</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ===== ログイン画面 ===== -->
+  <div id="login-screen" class="screen active">
+    <div class="login-container">
+      <div class="app-logo">📊</div>
+      <h1 class="app-title">SubsTracker</h1>
+      <p class="app-subtitle">サブスクリプションをスマートに管理</p>
+      <button id="login-btn" class="btn-github">
+        <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+        </svg>
+        GitHubでログイン
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== ホーム画面 ===== -->
+  <div id="home-screen" class="screen">
+
+    <!-- ヘッダー -->
+    <header class="header">
+      <div class="header-left">
+        <span class="header-title">SubsTracker</span>
+        <span class="header-user" id="user-name"></span>
+      </div>
+      <button id="logout-btn" class="btn-logout">ログアウト</button>
+    </header>
+
+    <!-- サマリー -->
+    <section class="summary-section" aria-label="合計金額">
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="summary-label">月間合計</div>
+          <div class="summary-amount" id="monthly-total">¥0</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">年間合計</div>
+          <div class="summary-amount" id="yearly-total">¥0</div>
+        </div>
+      </div>
+      <div class="summary-count">
+        <span class="summary-count-label">登録サブスク数</span>
+        <span class="summary-count-value" id="sub-count">0件</span>
+      </div>
+    </section>
+
+    <!-- サブスク一覧 -->
+    <div class="section-header">サブスクリプション</div>
+
+    <div id="empty-state" class="empty-state" aria-live="polite">
+      <div class="empty-icon">📭</div>
+      <p class="empty-text">サブスクがまだありません</p>
+      <p class="empty-hint">右下の「＋」ボタンで追加してください</p>
+    </div>
+
+    <div id="sub-list" class="sub-list" role="list" aria-label="サブスクリプション一覧"></div>
+
+    <!-- FAB -->
+    <button id="fab-add" class="fab" aria-label="サブスクを追加">＋</button>
+
+  </div>
+
+  <!-- ===== モーダル ===== -->
+  <div id="modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-title">サブスク追加</h2>
+        <button id="modal-close" class="modal-close" aria-label="閉じる">×</button>
+      </div>
+
+      <form id="sub-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="sub-name">サービス名</label>
+          <input
+            id="sub-name"
+            class="form-input"
+            type="text"
+            placeholder="例: Netflix"
+            required
+            maxlength="100"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="cycle">支払い周期</label>
+          <div class="select-wrapper">
+            <select id="cycle" class="form-select" required>
+              <option value="monthly">月次（毎月）</option>
+              <option value="yearly">年次（毎年）</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" id="amount-label" for="amount">金額（月額）</label>
+          <input
+            id="amount"
+            class="form-input"
+            type="number"
+            placeholder="例: 980"
+            min="1"
+            max="9999999"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="next-billing-date">次回更新日</label>
+          <input
+            id="next-billing-date"
+            class="form-input"
+            type="date"
+            required
+          />
+        </div>
+
+        <button id="submit-btn" type="submit" class="btn-submit">保存</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Supabase config（.gitignore対象） -->
+  <script src="js/config.js"></script>
+
+  <!-- メインスクリプト -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
