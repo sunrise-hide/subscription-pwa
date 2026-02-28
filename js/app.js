@@ -4,6 +4,7 @@ import { fetchSubscriptions, addSubscription, updateSubscription, deleteSubscrip
 import { initAuth } from './auth.js';
 import { requestNotificationPermission, registerServiceWorker, sendSubscriptionsToSW } from './notification.js';
 import { renderAnalytics } from './analytics.js';
+import { initCalendar, renderCalendar, renderHistory } from './calendar.js';
 
 let subscriptions = [];
 let editingId = null;
@@ -30,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setupEventListeners();
   setupTabs();
+  initCalendar();
 });
 
 // ---- 画面切り替え ----
@@ -60,16 +62,19 @@ function setupTabs() {
       document.getElementById('fab-add').style.display =
         panelId === 'home-panel' ? 'flex' : 'none';
 
-      // データパネルに切り替えたらチャートを描画
-      if (panelId === 'data-panel') {
-        renderAnalytics(subscriptions);
-      }
+      if (panelId === 'data-panel')     renderAnalytics(subscriptions);
+      if (panelId === 'calendar-panel') renderCalendar(subscriptions);
+      if (panelId === 'history-panel')  renderHistory(subscriptions);
     });
   });
 }
 
 function isDataPanelActive() {
   return document.getElementById('data-panel')?.classList.contains('active');
+}
+
+function activePanel() {
+  return document.querySelector('.panel.active')?.id;
 }
 
 // ---- イベントリスナー ----
@@ -271,7 +276,10 @@ async function handleFormSubmit(e) {
     renderSubscriptions();
     updateSummary();
     sendSubscriptionsToSW(subscriptions);
-    if (isDataPanelActive()) renderAnalytics(subscriptions);
+    const p = activePanel();
+    if (p === 'data-panel')     renderAnalytics(subscriptions);
+    if (p === 'calendar-panel') renderCalendar(subscriptions);
+    if (p === 'history-panel')  renderHistory(subscriptions);
     closeModal();
   } catch (err) {
     console.error('保存エラー:', err?.message, '| code:', err?.code, '| details:', err?.details, err);
@@ -300,7 +308,10 @@ async function handleDelete(id) {
     renderSubscriptions();
     updateSummary();
     sendSubscriptionsToSW(subscriptions);
-    if (isDataPanelActive()) renderAnalytics(subscriptions);
+    const p = activePanel();
+    if (p === 'data-panel')     renderAnalytics(subscriptions);
+    if (p === 'calendar-panel') renderCalendar(subscriptions);
+    if (p === 'history-panel')  renderHistory(subscriptions);
     showToast('削除しました');
   } catch (err) {
     console.error('削除エラー:', err);

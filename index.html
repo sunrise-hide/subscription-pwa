@@ -142,11 +142,62 @@
 
     </div>
 
+    <!-- ===== カレンダーパネル ===== -->
+    <div id="calendar-panel" class="panel">
+
+      <!-- ナビゲーション -->
+      <div class="cal-nav">
+        <button id="cal-prev" class="cal-nav-btn" aria-label="前の月">‹</button>
+        <span id="cal-title" class="cal-title"></span>
+        <button id="cal-next" class="cal-nav-btn" aria-label="次の月">›</button>
+      </div>
+
+      <!-- 曜日ヘッダー -->
+      <div class="cal-weekdays">
+        <span class="cal-wd sun">日</span>
+        <span class="cal-wd">月</span>
+        <span class="cal-wd">火</span>
+        <span class="cal-wd">水</span>
+        <span class="cal-wd">木</span>
+        <span class="cal-wd">金</span>
+        <span class="cal-wd sat">土</span>
+      </div>
+
+      <!-- 日付グリッド -->
+      <div id="cal-grid" class="cal-grid"></div>
+
+      <!-- 選択日の詳細 -->
+      <div id="cal-detail" class="cal-detail" style="display:none">
+        <div id="cal-detail-date" class="cal-detail-date"></div>
+        <div id="cal-detail-list"></div>
+      </div>
+
+    </div>
+
+    <!-- ===== 履歴パネル ===== -->
+    <div id="history-panel" class="panel">
+      <div class="section-header">支払い履歴（過去2年）</div>
+      <div id="history-empty" class="empty-state" style="display:none">
+        <div class="empty-icon">📋</div>
+        <p class="empty-text">履歴がありません</p>
+        <p class="empty-hint">サブスクを追加すると履歴が表示されます</p>
+      </div>
+      <div id="history-list" class="history-list"></div>
+    </div>
+
     <!-- ===== タブバー ===== -->
     <nav class="tab-bar" aria-label="メインナビゲーション">
       <button class="tab-btn active" data-panel="home-panel" aria-selected="true">
         <span class="tab-icon">🏠</span>
         <span class="tab-label">ホーム</span>
+      </button>
+      <button class="tab-btn" data-panel="calendar-panel" aria-selected="false">
+        <span class="tab-icon">📅</span>
+        <span class="tab-label">カレンダー</span>
+      </button>
+      <button class="tab-btn" data-panel="history-panel" aria-selected="false">
+        <span class="tab-icon">📋</span>
+        <span class="tab-label">履歴</span>
       </button>
       <button class="tab-btn" data-panel="data-panel" aria-selected="false">
         <span class="tab-icon">📊</span>

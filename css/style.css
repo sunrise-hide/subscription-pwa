@@ -828,3 +828,251 @@ body {
   flex-shrink: 0;
   display: inline-block;
 }
+
+/* ===== カレンダー ===== */
+.cal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1rem 0.5rem;
+}
+
+.cal-nav-btn {
+  background: var(--accent);
+  border: none;
+  color: var(--text);
+  font-size: 1.5rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition);
+  line-height: 1;
+}
+
+.cal-nav-btn:hover { background: #1a4a7a; }
+
+.cal-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  padding: 0 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.cal-wd {
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--subtext);
+  padding: 0.25rem 0;
+  font-weight: 600;
+}
+
+.cal-wd.sun { color: #ff6b6b; }
+.cal-wd.sat { color: var(--blue); }
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  padding: 0 0.5rem;
+}
+
+.cal-cell {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  gap: 2px;
+  cursor: default;
+  transition: background var(--transition);
+  padding: 2px;
+}
+
+.cal-cell.has-events {
+  cursor: pointer;
+}
+
+.cal-cell.has-events:hover,
+.cal-cell.selected {
+  background: var(--accent);
+}
+
+.cal-cell.today .cal-date-num {
+  background: var(--blue);
+  color: #fff;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cal-date-num {
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.cal-dots {
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+}
+
+.cal-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* 選択日の詳細カード */
+.cal-detail {
+  margin: 0.75rem 1rem 0;
+  background: var(--card);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+
+.cal-detail-date {
+  font-size: 0.8rem;
+  color: var(--subtext);
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cal-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(15, 52, 96, 0.5);
+}
+
+.cal-detail-item:last-child { border-bottom: none; }
+
+.cal-detail-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cal-detail-info {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.cal-detail-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.cal-detail-amount {
+  font-size: 0.9rem;
+  color: var(--blue);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ===== 履歴 ===== */
+.history-list {
+  padding: 0 1rem 1rem;
+}
+
+.history-month-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--subtext);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--accent);
+  margin-bottom: 0.25rem;
+}
+
+.history-month-total {
+  color: var(--blue);
+  font-size: 0.85rem;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid rgba(15, 52, 96, 0.4);
+}
+
+.history-item:last-child { border-bottom: none; }
+
+.history-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 28px;
+}
+
+.history-day {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.history-weekday {
+  font-size: 0.65rem;
+  color: var(--subtext);
+  margin-top: 1px;
+}
+
+.history-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.history-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.history-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.history-cycle {
+  font-size: 0.7rem;
+  color: var(--subtext);
+}
+
+.history-amount {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--blue);
+  white-space: nowrap;
+}
