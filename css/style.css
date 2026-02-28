@@ -36,7 +36,6 @@ body {
 /* ===== Screen management ===== */
 .screen {
   display: none;
-  min-height: 100vh;
 }
 .screen.active {
   display: flex;
@@ -45,6 +44,8 @@ body {
 
 /* ===== Login Screen ===== */
 #login-screen {
+  min-height: 100vh;
+  min-height: 100dvh;
   align-items: center;
   justify-content: center;
   padding: 2rem;
@@ -117,7 +118,9 @@ body {
   max-width: 600px;
   margin: 0 auto;
   width: 100%;
-  padding-bottom: 5rem;
+  /* 画面全体の高さを固定してタブバーを下部に固定 */
+  height: 100vh;
+  height: 100dvh; /* iPhone Safari の動的ビューポート対応 */
 }
 
 /* ===== Header ===== */
@@ -658,28 +661,29 @@ body {
   display: none;
   flex-direction: column;
   flex: 1;
+  min-height: 0; /* flex子要素のスクロールに必須 */
   overflow-y: auto;
-  padding-bottom: 5rem; /* タブバー分 */
+  -webkit-overflow-scrolling: touch; /* iOS慣性スクロール */
+  padding-bottom: 1.5rem;
 }
 
 .panel.active {
   display: flex;
 }
 
-/* ホームパネルはFAB分余白を増やす */
+/* ホームパネルはFABが被らないよう余白を増やす */
 #home-panel {
-  padding-bottom: 7rem;
+  padding-bottom: 5rem;
 }
 
 /* ===== タブバー ===== */
 .tab-bar {
   display: flex;
-  position: sticky;
-  bottom: 0;
+  flex-shrink: 0; /* 高さを固定（圧縮させない） */
   background: var(--card);
   border-top: 1px solid var(--accent);
-  z-index: 100;
-  flex-shrink: 0;
+  /* iOS Safari のセーフエリア対応 */
+  padding-bottom: env(safe-area-inset-bottom, 0);
 }
 
 .tab-btn {
