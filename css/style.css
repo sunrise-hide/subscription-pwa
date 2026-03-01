@@ -1080,3 +1080,212 @@ body {
   color: var(--blue);
   white-space: nowrap;
 }
+
+/* ===== AI パネル ===== */
+.ai-panel {
+  /* パネル内をflexコンテナとして使う */
+  overflow: hidden; /* 子要素がスクロールするので親はhidden */
+  padding-bottom: 0;
+}
+
+.ai-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1rem 0.75rem;
+  border-bottom: 1px solid var(--accent);
+  flex-shrink: 0;
+}
+
+.ai-panel-header-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.ai-panel-header-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.ai-panel-header-subtitle {
+  font-size: 0.75rem;
+  color: var(--subtext);
+  margin-top: 0.1rem;
+}
+
+/* メッセージ一覧エリア */
+.ai-messages {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* メッセージバブル共通 */
+.ai-message {
+  display: flex;
+  max-width: 85%;
+}
+
+.ai-message-ai {
+  align-self: flex-start;
+}
+
+.ai-message-user {
+  align-self: flex-end;
+}
+
+.ai-message-content {
+  padding: 0.75rem 1rem;
+  border-radius: 16px;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.ai-message-ai .ai-message-content {
+  background: var(--card);
+  border: 1px solid var(--accent);
+  border-bottom-left-radius: 4px;
+  color: var(--text);
+}
+
+.ai-message-user .ai-message-content {
+  background: var(--blue);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.ai-message-error .ai-message-content {
+  background: rgba(255, 68, 68, 0.15);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* タイピングアニメーション */
+.ai-typing {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.25rem 0;
+}
+
+.ai-typing span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--subtext);
+  animation: aiTypingBounce 1.2s infinite ease-in-out;
+}
+
+.ai-typing span:nth-child(1) { animation-delay: 0s; }
+.ai-typing span:nth-child(2) { animation-delay: 0.2s; }
+.ai-typing span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes aiTypingBounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
+
+/* 入力エリア */
+.ai-input-area {
+  flex-shrink: 0;
+  border-top: 1px solid var(--accent);
+  background: var(--card);
+  padding: 0.75rem 1rem;
+  /* iOS safe area */
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0.75rem));
+}
+
+/* サジェストチップ */
+.ai-suggestions {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  margin-bottom: 0.75rem;
+  padding-bottom: 2px;
+}
+
+.ai-suggestions::-webkit-scrollbar {
+  display: none;
+}
+
+.ai-suggestion-chip {
+  flex-shrink: 0;
+  background: var(--accent);
+  border: 1px solid var(--blue);
+  border-radius: 999px;
+  color: var(--blue);
+  font-size: 0.78rem;
+  padding: 0.35rem 0.875rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--transition), color var(--transition);
+}
+
+.ai-suggestion-chip:hover {
+  background: var(--blue);
+  color: #fff;
+}
+
+/* 入力行 */
+.ai-input-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.ai-input {
+  flex: 1;
+  background: var(--accent);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+  color: var(--text);
+  font-size: 0.95rem;
+  transition: border-color var(--transition);
+}
+
+.ai-input:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+
+.ai-input::placeholder {
+  color: var(--subtext);
+}
+
+.ai-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.ai-send-btn {
+  flex-shrink: 0;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--transition);
+  white-space: nowrap;
+}
+
+.ai-send-btn:hover {
+  opacity: 0.85;
+}
+
+.ai-send-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

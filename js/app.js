@@ -5,6 +5,7 @@ import { initAuth } from './auth.js';
 import { requestNotificationPermission, registerServiceWorker, sendSubscriptionsToSW } from './notification.js';
 import { renderAnalytics } from './analytics.js';
 import { initCalendar, renderCalendar, renderHistory } from './calendar.js';
+import { initAIPanel, updateAISubscriptions } from './ai.js';
 
 let subscriptions = [];
 let editingId = null;
@@ -32,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupEventListeners();
   setupTabs();
   initCalendar();
+  initAIPanel();
 });
 
 // ---- 画面切り替え ----
@@ -61,6 +63,10 @@ function setupTabs() {
       // FABはホームパネルのみ表示
       document.getElementById('fab-add').style.display =
         panelId === 'home-panel' ? 'flex' : 'none';
+
+      if (panelId === 'ai-panel') {
+        document.getElementById('ai-input').focus();
+      }
 
       if (panelId === 'data-panel')     renderAnalytics(subscriptions);
       if (panelId === 'calendar-panel') renderCalendar(subscriptions);
@@ -104,6 +110,7 @@ async function loadSubscriptions() {
     renderSubscriptions();
     updateSummary();
     sendSubscriptionsToSW(subscriptions);
+    updateAISubscriptions(subscriptions);
   } catch (err) {
     console.error('データ取得エラー:', err?.message, '| code:', err?.code, '| details:', err?.details, err);
     showToast('データの取得に失敗しました', 'error');
@@ -276,6 +283,7 @@ async function handleFormSubmit(e) {
     renderSubscriptions();
     updateSummary();
     sendSubscriptionsToSW(subscriptions);
+    updateAISubscriptions(subscriptions);
     const p = activePanel();
     if (p === 'data-panel')     renderAnalytics(subscriptions);
     if (p === 'calendar-panel') renderCalendar(subscriptions);
@@ -308,6 +316,7 @@ async function handleDelete(id) {
     renderSubscriptions();
     updateSummary();
     sendSubscriptionsToSW(subscriptions);
+    updateAISubscriptions(subscriptions);
     const p = activePanel();
     if (p === 'data-panel')     renderAnalytics(subscriptions);
     if (p === 'calendar-panel') renderCalendar(subscriptions);

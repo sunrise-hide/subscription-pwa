@@ -28,9 +28,10 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          printf "const SUPABASE_URL = '%s';\nconst SUPABASE_ANON_KEY = '%s';\n" \
-            "$SUPABASE_URL" "$SUPABASE_ANON_KEY" > js/config.js
+          printf "const SUPABASE_URL = '%s';\nconst SUPABASE_ANON_KEY = '%s';\nconst GEMINI_API_KEY = '%s';\n" \
+            "$SUPABASE_URL" "$SUPABASE_ANON_KEY" "$GEMINI_API_KEY" > js/config.js
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

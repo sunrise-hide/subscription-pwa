@@ -185,6 +185,45 @@
       <div id="history-list" class="history-list"></div>
     </div>
 
+    <!-- ===== AIパネル ===== -->
+    <div id="ai-panel" class="panel ai-panel">
+
+      <div class="ai-panel-header">
+        <div class="ai-panel-header-icon">🤖</div>
+        <div>
+          <div class="ai-panel-header-title">AI アシスタント</div>
+          <div class="ai-panel-header-subtitle">サブスクについて何でも聞いてください</div>
+        </div>
+      </div>
+
+      <div id="ai-messages" class="ai-messages">
+        <div class="ai-message ai-message-ai">
+          <div class="ai-message-content">こんにちは！サブスクについて質問してください。例えば「一番高いサブスクは？」「月額を節約するには？」などが聞けます。</div>
+        </div>
+      </div>
+
+      <div class="ai-input-area">
+        <div class="ai-suggestions">
+          <button class="ai-suggestion-chip">一番高いサブスクは？</button>
+          <button class="ai-suggestion-chip">月1万円以下にするには？</button>
+          <button class="ai-suggestion-chip">年間いくら使ってる？</button>
+          <button class="ai-suggestion-chip">来月の支払いは？</button>
+        </div>
+        <div class="ai-input-row">
+          <input
+            id="ai-input"
+            class="ai-input"
+            type="text"
+            placeholder="質問を入力..."
+            maxlength="500"
+            autocomplete="off"
+          />
+          <button id="ai-send" class="ai-send-btn" aria-label="送信">送信</button>
+        </div>
+      </div>
+
+    </div>
+
     <!-- ===== タブバー ===== -->
     <nav class="tab-bar" aria-label="メインナビゲーション">
       <button class="tab-btn active" data-panel="home-panel" aria-selected="true">
@@ -202,6 +241,10 @@
       <button class="tab-btn" data-panel="data-panel" aria-selected="false">
         <span class="tab-icon">📊</span>
         <span class="tab-label">データ</span>
+      </button>
+      <button class="tab-btn" data-panel="ai-panel" aria-selected="false">
+        <span class="tab-icon">🤖</span>
+        <span class="tab-label">AI</span>
       </button>
     </nav>
 
