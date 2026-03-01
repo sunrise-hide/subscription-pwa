@@ -55,15 +55,13 @@ export async function sendAIMessage(userMessage) {
   }
 
   const systemInstruction = buildSystemInstruction(subscriptionsCache);
+  const combinedMessage = `${systemInstruction}\n\n【質問】\n${userMessage}`;
 
   const response = await fetch(`${GEMINI_ENDPOINT}?key=${apiKey}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      system_instruction: {
-        parts: [{ text: systemInstruction }],
-      },
-      contents: [{ role: 'user', parts: [{ text: userMessage }] }],
+      contents: [{ role: 'user', parts: [{ text: combinedMessage }] }],
       generationConfig: {
         temperature: 0.7,
         maxOutputTokens: 1024,
