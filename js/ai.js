@@ -3,7 +3,7 @@
 /* global GEMINI_API_KEY */
 
 const GEMINI_ENDPOINT =
-  'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent';
+  'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
 
 let subscriptionsCache = [];
 
